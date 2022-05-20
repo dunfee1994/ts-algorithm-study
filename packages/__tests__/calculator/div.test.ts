@@ -6,7 +6,7 @@ describe('div(a, b) => a / b', () => {
     })
 
     it('a 与 b 均为 0', () => {
-        expect(div(0, 0)).toBe(NaN)
+        expect(div(0, 0)).toBeNaN()
     })
 
     it('a 与 b 中有一个为 0', () => {
