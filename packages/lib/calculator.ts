@@ -4,8 +4,8 @@ export function add(a: number = 0, b:number = 0):number {
         return NaN
     }
 
-    let c:number
-    let d:number
+    let c:number = 0
+    let d:number = 0
 
     // 获取 a 的小数位长度
     try {
