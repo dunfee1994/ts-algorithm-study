@@ -19,4 +19,10 @@ describe('sub(a, b) => a - b', () => {
         expect(sub(2, undefined)).toBe(2)
         expect(sub(undefined, undefined)).toBe(0)
     })
+
+    it('a 与 b 中有 null', () => {
+        expect(sub(null, 1)).toBe(-1)
+        expect(sub(2, null)).toBe(2)
+        expect(sub(null, null)).toBe(0)
+    })
 })

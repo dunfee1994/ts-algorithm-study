@@ -28,4 +28,10 @@ describe('div(a, b) => a / b', () => {
         expect(div(2, undefined)).toBe(2)
         expect(div(undefined, undefined)).toBe(0)
     })
+
+    it('a 与 b 中有 null', () => {
+        expect(div(null, 1)).toBe(0)
+        expect(div(2, null)).toBe(Infinity)
+        expect(div(null, null)).toBeNaN()
+    })
 })

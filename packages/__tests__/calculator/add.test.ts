@@ -19,4 +19,10 @@ describe('add(a, b) => a + b', () => {
         expect(add(2, undefined)).toBe(2)
         expect(add(undefined, undefined)).toBe(0)
     })
+
+    it('a 与 b 中有 null', () => {
+        expect(add(null, 1)).toBe(1)
+        expect(add(2, null)).toBe(2)
+        expect(add(null, null)).toBe(0)
+    })
 })
