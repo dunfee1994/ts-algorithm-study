@@ -1,7 +1,7 @@
 import Queue from '../lib/queque-with-linked-list'
 
-describe('Queue with Linked List', () => {
-    it('join in the Queue', () => {
+describe('使用链表实现队列', () => {
+    it('入队', () => {
         const q = new Queue()
 
         expect(q.join(1)).toEqual({
@@ -29,7 +29,7 @@ describe('Queue with Linked List', () => {
         })
     })
 
-    it('out of the Queque', () => {
+    it('出队', () => {
         const q = new Queue()
 
         q.join(1)
@@ -43,7 +43,7 @@ describe('Queue with Linked List', () => {
         expect(q.out()).toBe(null)
     })
 
-    it('length of the Queue', () => {
+    it('获取队列的长度', () => {
         const q = new Queue()
 
         q.join(1)
