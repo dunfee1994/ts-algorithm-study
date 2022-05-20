@@ -1,14 +1,15 @@
 import { add } from '../../lib/calculator'
 
 describe('add(a, b) => a + b', () => {
-    it('a 与 b 均为 number', () => {
-        // 均为整数
+    it('a 与 b 均为整数', () => {
         expect(add(1, 2)).toBe(3)
+    })
 
-        // 均为浮点数
+    it('a 与 b 均为浮点数', () => {
         expect(add(0.1, 0.2)).toBe(0.3)
+    })
 
-        // 有一个是浮点数
+    it('a 与 b 中有一个为浮点数', () => {
         expect(add(1, 0.1)).toBe(1.1)
         expect(add(0.2, 2)).toBe(2.2)
     })

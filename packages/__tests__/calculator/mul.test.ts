@@ -1,14 +1,15 @@
 import { mul } from '../../lib/calculator'
 
 describe('add(a, b) => a + b', () => {
-    it('a 与 b 均为 number', () => {
-        // 均为整数
+    it('a 与 b 均为整数', () => {
         expect(mul(2, 1)).toBe(2)
+    })
 
-        // 均为浮点数
-        expect(mul(0.3, 0.1)).toBe(0.03)
+    it('a 与 b 均为浮点数', () => {
+        expect(mul(0.1, 0.2)).toBe(0.02)
+    })
 
-        // 有一个是浮点数
+    it('a 与 b 中有一个为浮点数', () => {
         expect(mul(1, 0.1)).toBe(0.1)
         expect(mul(0.2, 2)).toBe(0.4)
     })

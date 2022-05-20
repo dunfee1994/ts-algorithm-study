@@ -1,14 +1,24 @@
 import { div } from '../../lib/calculator'
 
 describe('div(a, b) => a / b', () => {
-    it('a 与 b 均为 number', () => {
-        // 均为整数
+    it('a 与 b 均为非 0 整数', () => {
         expect(div(2, 1)).toBe(2)
+    })
 
-        // 均为浮点数
+    it('a 与 b 均为 0', () => {
+        expect(div(0, 0)).toBe(NaN)
+    })
+
+    it('a 与 b 中有一个为 0', () => {
+        expect(div(0, 1)).toBe(0)
+        expect(div(1, 0)).toBe(Infinity)
+    })
+
+    it('a 与 b 均为浮点数', () => {
         expect(div(0.3, 0.1)).toBe(3)
+    })
 
-        // 有一个是浮点数
+    it('a 与 b 中有一个为浮点数', () => {
         expect(div(1, 0.1)).toBe(10)
         expect(div(0.2, 2)).toBe(0.1)
     })
