@@ -1,11 +1,11 @@
 // 加法
-export function add(a: number = 0, b:number = 0):number {
+export function add(a: number = 0, b: number = 0): number {
     if (isNaN(a = +a) || isNaN(b = +b)) {
         return NaN
     }
 
-    let c:number = 0
-    let d:number = 0
+    let c: number = 0
+    let d: number = 0
 
     // 获取 a 的小数位长度
     try {
@@ -22,25 +22,25 @@ export function add(a: number = 0, b:number = 0):number {
     }
 
     // 先求 e，把 a、b 同时乘以 e 转换成整数相加，再除以 e 还原
-    let e:number = Math.pow(10, Math.max(c, d))
+    let e: number = Math.pow(10, Math.max(c, d))
     return (mul(a, e) + mul(b, e)) / e
 }
 
 // 减法
-export function sub(a: number = 0, b:number = 0):number {
+export function sub(a: number = 0, b: number = 0): number {
     return add(a, -b)
 }
 
 // 乘法
-export function mul(a: number = 0, b:number = 0):number {
+export function mul(a: number = 0, b: number = 0): number {
     if (isNaN(a = +a) || isNaN(b = +b)) {
         return NaN
     }
 
-    let c:number = 0
+    let c: number = 0
 
-    let d:string = a.toString()
-    let e:string = b.toString()
+    let d: string = a.toString()
+    let e: string = b.toString()
 
     // c 累加 a 的小数位长度
     try {
@@ -63,7 +63,7 @@ export function mul(a: number = 0, b:number = 0):number {
 }
 
 // 除法
-export function div(a: number = 0, b:number = 1):number {
+export function div(a: number = 0, b: number = 1): number {
     if (isNaN(a = +a) || isNaN(b = +b)) {
         return NaN
     }
@@ -72,11 +72,11 @@ export function div(a: number = 0, b:number = 1):number {
         return a === 0 ? NaN : Infinity
     }
 
-    let c:string = a.toString()
-    let d:string = b.toString()
+    let c: string = a.toString()
+    let d: string = b.toString()
 
-    let e:number = 0
-    let f:number = 0
+    let e: number = 0
+    let f: number = 0
 
     try {
         e = c.split('.')[1].length
