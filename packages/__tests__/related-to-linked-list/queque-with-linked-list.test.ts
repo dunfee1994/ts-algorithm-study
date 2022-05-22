@@ -1,4 +1,4 @@
-import Queue from '../lib/queque-with-linked-list'
+import Queue from '../../lib/related-to-linked-list/queque-with-linked-list'
 
 describe('使用链表实现队列', () => {
     it('入队', () => {

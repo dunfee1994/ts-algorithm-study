@@ -1,5 +1,5 @@
-import createLinkedList from '../lib/create-linked-list'
-import reverseLinkedList from '../lib/reverse-linked-list'
+import createLinkedList from '../../lib/related-to-linked-list/create-linked-list'
+import reverseLinkedList from '../../lib/related-to-linked-list/reverse-linked-list'
 
 describe('反转链表', () => {
     it('有多个节点的链表', () => {
