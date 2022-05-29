@@ -5,7 +5,7 @@ interface Result {
 
 // 通过 正则表达式 方式找出连续字符及其出现次数
 export default function findContinuousCharByRegexp(str: string = ''): Result {
-    const result = {
+    const result: Result = {
         char: '',
         count: 0
     }

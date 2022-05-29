@@ -5,7 +5,7 @@ interface Result {
 
 // 通过 跳步 方式找出连续字符及其出现次数
 export default function findContinuousCharByHop(str: string = ''): Result {
-    const result = {
+    const result: Result = {
         char: '',
         count: 0
     }
