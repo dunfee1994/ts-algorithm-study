@@ -18,6 +18,9 @@ function removeExtraZero(numStr: string): string {
 }
 
 export default function customMinus(numStra: string, numStrb: string): string {
+    numStra = removeExtraZero(numStra)
+    numStrb = removeExtraZero(numStrb)
+
     if (numStra === numStrb) return '0'
 
     const maxNumStr = getMaxNumStr(numStra, numStrb)
