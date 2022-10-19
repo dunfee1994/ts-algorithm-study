@@ -29,10 +29,10 @@ function merge(leftList: number[], rightList: number[]): number[] {
 export default function mergeSort(list: number[]): number[] {
     if (list.length <= 1) return list
 
-    const mid = list.length / 2 >>> 0
+    const midIndex = list.length / 2 >>> 0
 
-    const rightList = list.slice(mid)
-    const leftList = list.slice(0, mid)
+    const rightList = list.slice(midIndex)
+    const leftList = list.slice(0, midIndex)
 
     return merge(mergeSort(leftList), mergeSort(rightList))
 }
