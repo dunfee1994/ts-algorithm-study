@@ -1,18 +1,16 @@
 export default function insertionSort(list: number[]): number[] {
-    const len = list.length
+    if (new Set(list).size <= 1) return list
 
-    if (len <= 1) return list
-
-    for (let i = 1; i < len; i++) {
+    const endIndex = list.length - 1
+    for (let i = endIndex; i >= 0; i--) {
         const tmp = list[i]
 
-        let j = i - 1
-        while (j >= 0 && list[j] > tmp) {
-            list[j + 1] = list[j]
-            j--
+        let j = i + 1
+        while (j <= endIndex && list[j] < tmp) {
+            list[j - 1] = list[j++]
         }
 
-        list[j + 1] = tmp
+        list[j - 1] = tmp
     }
 
     return list

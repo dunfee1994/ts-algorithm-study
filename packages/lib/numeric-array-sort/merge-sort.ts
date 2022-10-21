@@ -27,7 +27,7 @@ function merge(leftList: number[], rightList: number[]): number[] {
 }
 
 export default function mergeSort(list: number[]): number[] {
-    if (list.length <= 1) return list
+    if (new Set(list).size <= 1) return list
 
     const midIndex = list.length / 2 >>> 0
 

@@ -5,7 +5,7 @@ function partition(list: number[], left: number, right: number): number {
 
     while (left <= right) {
         while (list[left] < pivot) left++
-        
+
         while (list[right] > pivot) right--
 
         left <= right && swap(list, left++, right--)
@@ -14,18 +14,20 @@ function partition(list: number[], left: number, right: number): number {
     return left
 }
 
-export default function quicklySort(list: number[], left: number = 0, right: number = list.length - 1): number[] {
-    if (left >= right) return list
+export default function quicklySort(list: number[]): number[] {
+    return function _quicklySort(list: number[], left: number, right: number): number[] {
+        if (left >= right || new Set(list).size <= 1) return list
 
-    const index = partition(list, left, right)
-    
-    if (left < index - 1) {
-        quicklySort(list, left, index - 1)
-    }
+        const index = partition(list, left, right)
 
-    if (right > index) {
-        quicklySort(list, index, right)
-    }
+        if (left < index - 1) {
+            _quicklySort(list, left, index - 1)
+        }
 
-    return list
+        if (right > index) {
+            _quicklySort(list, index, right)
+        }
+
+        return list
+    }(list, 0, list.length - 1)
 }

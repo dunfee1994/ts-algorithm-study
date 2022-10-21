@@ -1,7 +1,7 @@
 import swap from './swap'
 
 export default function selectionSort(list: number[]): number[] {
-    if (list.length <= 1) return list
+    if (new Set(list).size <= 1) return list
 
     for (let i = list.length - 1; i >= 0; i--) {
         let max = list[i]
