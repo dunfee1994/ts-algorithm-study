@@ -30,7 +30,9 @@ export default function bucketSort(list: number[]): number[] {
         for (let i = list.length - 1; i >= 0; i--) {
             const item = list[i]
             const itemStr = item.toString()
-            const bucketKey = +itemStr[itemStr.length - digit]
+            
+            let bucketKey = +itemStr[itemStr.length - digit]
+            bucketKey = isNaN(bucketKey) ? 0 : bucketKey
 
             if (!Array.isArray(bucket[bucketKey])) {
                 bucket[bucketKey] = [item]
