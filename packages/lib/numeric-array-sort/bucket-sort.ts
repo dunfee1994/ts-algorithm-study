@@ -1,13 +1,43 @@
-function getMaxNumberDigit(list: number[]): number {
-    let maxNumber = 0
+function getIntegerDigit(num: number): number {
+    const numStr = num.toString()
+
+    if (Number.isInteger(num)) {
+        return numStr.length
+    }
+
+    return numStr.split('.')[0].length
+}
+
+function getDecimalDigit(num: number): number {
+    if (Number.isInteger(num)) return 0
+
+    return num.toString().split('.')[1].length
+}
+
+function getMaxIntegerDigit(list: number[]): number {
+    let maxDigit = 0
 
     for (let i = list.length - 1; i >= 0; i--) {
-        if (maxNumber < list[i]) {
-            maxNumber = list[i]
+        const curDigit = getIntegerDigit(list[i])
+        if (maxDigit < curDigit) {
+            maxDigit = curDigit
         }
     }
 
-    return maxNumber.toString().length
+    return maxDigit
+}
+
+function getMaxDecimalDigit(list: number[]): number {
+    let maxDigit = 0
+
+    for (let i = list.length - 1; i >= 0; i--) {
+        const curDigit = getDecimalDigit(list[i])
+        if (maxDigit < curDigit) {
+            maxDigit = curDigit
+        }
+    }
+
+    return maxDigit
 }
 
 function appendIntoTail(list: number[], appendList: number[]) {
@@ -24,13 +54,16 @@ function appendIntoTail(list: number[], appendList: number[]) {
 export default function bucketSort(list: number[]): number[] {
     if (new Set(list).size <= 1) return list
 
-    return function _bucketSort(list: number[], digit: number): number[] {
+    const maxIntegerDigit = getMaxIntegerDigit(list)
+    const maxDecimalDigit = getMaxDecimalDigit(list)
+
+    return function _bucketSort(list: number[], digit: number, decimalDigit: number): number[] {
         const bucket: Array<number[]> = []
 
         for (let i = list.length - 1; i >= 0; i--) {
             const item = list[i]
-            const itemStr = item.toString()
-            
+            const itemStr = item.toFixed(decimalDigit)
+
             let bucketKey = +itemStr[itemStr.length - digit]
             bucketKey = isNaN(bucketKey) ? 0 : bucketKey
 
@@ -41,7 +74,7 @@ export default function bucketSort(list: number[]): number[] {
 
             bucket[bucketKey].push(item)
         }
-        
+
         const res: number[] = []
 
         for (let key = 0; key <= 9; key++) {
@@ -56,9 +89,9 @@ export default function bucketSort(list: number[]): number[] {
                 continue
             }
 
-            appendIntoTail(res, _bucketSort(bucketItem, digit - 1))
+            appendIntoTail(res, _bucketSort(bucketItem, digit - 1, decimalDigit))
         }
 
         return res
-    }(list, getMaxNumberDigit(list))
+    }(list, maxIntegerDigit + maxDecimalDigit + +(maxDecimalDigit > 0), maxDecimalDigit)
 }
