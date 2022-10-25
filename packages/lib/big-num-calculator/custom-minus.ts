@@ -24,15 +24,15 @@ export default function customMinus(numStra: string, numStrb: string): string {
     if (numStra === numStrb) return '0'
 
     const maxNumStr = getMaxNumStr(numStra, numStrb)
-    const maxLength = Math.max(numStra.length, numStrb.length)
+    const maxNumStrLength = maxNumStr.length
 
     let minNumStr = maxNumStr !== numStra ? numStra : numStrb
-    minNumStr = minNumStr.padStart(maxLength, '0')
+    minNumStr = minNumStr.padStart(maxNumStrLength, '0')
 
     let c = 0
     let res = ''
 
-    for (let i = maxLength - 1; i >= 0; i--) {
+    for (let i = maxNumStrLength - 1; i >= 0; i--) {
         let sub = +maxNumStr[i] - +minNumStr[i] - c
 
         c = sub < 0 ? 1 : 0
