@@ -1,11 +1,6 @@
 function getIntegerDigit(num: number): number {
-    const numStr = num.toString()
-
-    if (Number.isInteger(num)) {
-        return numStr.length
-    }
-
-    return numStr.split('.')[0].length
+    const len = num.toFixed(0).length
+    return num >= 0 ? len : len - 1
 }
 
 function getDecimalDigit(num: number): number {
@@ -43,12 +38,18 @@ function getMaxDecimalDigit(list: number[]): number {
 function appendIntoTail(list: number[], appendList: number[]) {
     const appendCount = appendList.length
 
-    let i = 0
     let endIndex = list.length
-
-    while (i < appendCount) {
-        list[endIndex++] = appendList[i++]
+    for (let i = 0; i < appendCount; i++) {
+        list[endIndex++] = appendList[i]
     }
+}
+
+function getBucketName(num: number, digit: number, decimalDigit: number): string {
+    let numStr = num.toFixed(decimalDigit)
+    numStr = num >= 0 ? numStr : numStr.substring(1)
+
+    const numChar = numStr[numStr.length - digit]
+    return num >= 0 || isNaN(+numChar) ? numChar : '-' + numChar
 }
 
 export default function bucketSort(list: number[]): number[] {
@@ -56,29 +57,30 @@ export default function bucketSort(list: number[]): number[] {
 
     const maxIntegerDigit = getMaxIntegerDigit(list)
     const maxDecimalDigit = getMaxDecimalDigit(list)
+    const bucketNames = Array(19).fill(null).map((_i, index) => index - 9 + '')
 
     return function _bucketSort(list: number[], digit: number, decimalDigit: number): number[] {
-        const bucket: Array<number[]> = []
+        const buckets: Array<number[]> = []
 
         for (let i = list.length - 1; i >= 0; i--) {
-            const item = list[i]
-            const itemStr = item.toFixed(decimalDigit)
+            const num = list[i]
+            const bucketName = getBucketName(num, digit, decimalDigit)
 
-            let bucketKey = +itemStr[itemStr.length - digit]
-            bucketKey = isNaN(bucketKey) ? 0 : bucketKey
+            let bucketKey = bucketNames.indexOf(bucketName)
+            bucketKey = bucketKey > -1 ? bucketKey : 9
 
-            if (!Array.isArray(bucket[bucketKey])) {
-                bucket[bucketKey] = [item]
+            if (!Array.isArray(buckets[bucketKey])) {
+                buckets[bucketKey] = [num]
                 continue
             }
 
-            bucket[bucketKey].push(item)
+            buckets[bucketKey].push(num)
         }
 
         const res: number[] = []
 
-        for (let key = 0; key <= 9; key++) {
-            const bucketItem = bucket[key] || []
+        for (let key = 0; key <= 19; key++) {
+            const bucketItem = buckets[key] || []
 
             if (bucketItem.length === 0) {
                 continue
