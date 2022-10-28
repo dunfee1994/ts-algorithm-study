@@ -5,7 +5,7 @@
     "main": "lib/index.js",
     "scripts": {
         "test": "jest",
-        "git-push": "node scripts/run.js git-push"
+        "git-push": "node scripts/cli/run.js git-push"
     },
     "author": "dunfee",
     "license": "ISC",

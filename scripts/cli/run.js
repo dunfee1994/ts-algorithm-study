@@ -42,6 +42,6 @@ if (!task) {
 } else {
     console.log('tools run', task)
 
-    require('./gulpfile')
+    require('../core/gulpfile')
     runTask(task)
 }

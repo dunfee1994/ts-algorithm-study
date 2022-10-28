@@ -1,6 +1,6 @@
 const isWindows = require('is-windows')
 
-const getRunCmdEnv = require('./getRunCmdEnv')
+const getRunCmdEnv = require('../utils/getRunCmdEnv')
 
 module.exports = function runCmd(cmd, _args, fn) {
     const args = _args || []
