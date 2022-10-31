@@ -1,4 +1,4 @@
-import find from '../lib/find'
+import find from '../core/find'
 
 interface Person {
     name: string // 名字

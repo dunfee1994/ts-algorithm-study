@@ -1,4 +1,4 @@
-import { div } from '../../lib/calculator'
+import { div } from '../../core/calculator'
 
 describe('div(a, b) => a / b', () => {
     it('a 与 b 均为非 0 整数', () => {

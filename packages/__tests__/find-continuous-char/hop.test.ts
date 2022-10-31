@@ -1,4 +1,4 @@
-import findContinuousCharByHop from '../../lib/find-continuous-char/hop'
+import findContinuousCharByHop from '../../core/find-continuous-char/hop'
 
 describe('通过 跳步 方式找出连续字符及其出现次数', () => {
     it('有多个连续出现次数的字符', () => {

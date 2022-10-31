@@ -1,4 +1,4 @@
-import binarySearchRecursion from '../../lib/binary-search/recursion'
+import binarySearchRecursion from '../../core/binary-search/recursion'
 
 describe('二分法查找（递归）', () => {
     it('正常情况', () => {

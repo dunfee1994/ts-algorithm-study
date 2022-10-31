@@ -1,4 +1,4 @@
-import findContinuousCharByDoublePointer from '../../lib/find-continuous-char/double-pointer'
+import findContinuousCharByDoublePointer from '../../core/find-continuous-char/double-pointer'
 
 describe('通过 双指针 方式找出连续字符及其出现次数', () => {
     it('有多个连续出现次数的字符', () => {

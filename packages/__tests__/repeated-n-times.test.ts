@@ -1,4 +1,4 @@
-import repeatedNTimes from '../lib/repeated-n-times'
+import repeatedNTimes from '../core/repeated-n-times'
 
 describe('在长度 2N 的数组中找出重复 N 次的元素', () => {
     it('数组长度为 0', () => {

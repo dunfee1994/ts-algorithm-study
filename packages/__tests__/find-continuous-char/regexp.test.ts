@@ -1,4 +1,4 @@
-import findContinuousCharByRegexp from '../../lib/find-continuous-char/regexp'
+import findContinuousCharByRegexp from '../../core/find-continuous-char/regexp'
 
 describe('通过 正则表达式 方式找出连续字符及其出现次数', () => {
     it('有多个连续出现次数的字符', () => {

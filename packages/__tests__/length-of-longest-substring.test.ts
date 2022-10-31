@@ -1,4 +1,4 @@
-import lengthOfLongestSubstring from '../lib/length-of-longest-substring'
+import lengthOfLongestSubstring from '../core/length-of-longest-substring'
 
 describe('找出字符串 str 其中不含有重复字符的最长子串的长度', () => {
     it('字符串 str 不包含重复字符', () => {

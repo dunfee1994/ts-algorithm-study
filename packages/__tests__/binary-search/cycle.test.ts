@@ -1,4 +1,4 @@
-import binarySearchCycle from '../../lib/binary-search/cycle'
+import binarySearchCycle from '../../core/binary-search/cycle'
 
 describe('二分法查找（循环）', () => {
     it('正常情况', () => {

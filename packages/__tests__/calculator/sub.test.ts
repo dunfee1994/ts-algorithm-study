@@ -1,4 +1,4 @@
-import { sub } from '../../lib/calculator'
+import { sub } from '../../core/calculator'
 
 describe('sub(a, b) => a - b', () => {
     it('a 与 b 均为整数', () => {

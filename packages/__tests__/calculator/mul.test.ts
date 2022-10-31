@@ -1,4 +1,4 @@
-import { mul } from '../../lib/calculator'
+import { mul } from '../../core/calculator'
 
 describe('add(a, b) => a + b', () => {
     it('a 与 b 均为整数', () => {
