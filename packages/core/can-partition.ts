@@ -10,7 +10,7 @@ function getSum(nums: number[]): number {
  *
  * @returns {boolean} 可以拆分返回 true，否则返回 false
  */
-function canPartitionOne(nums: number[]): boolean {
+export function canPartitionOne(nums: number[]): boolean {
     const sum = getSum(nums)
     if ((sum & 1) !== 0) return false
 
@@ -36,7 +36,7 @@ function canPartitionOne(nums: number[]): boolean {
  *
  * @returns {boolean} 可以拆分返回 true，否则返回 false
  */
-function canPartitionTwo(nums: number[]): boolean {
+export function canPartitionTwo(nums: number[]): boolean {
     const numsCount = nums.length
     if (numsCount === 0) return false
 
