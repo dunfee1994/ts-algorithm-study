@@ -63,7 +63,7 @@ export const getBackpackMaxValueTwo: BackpackProblemFn = (weights, values, backp
 
 /**
  * 求出一个背包里可以装入商品的最大价值
- * 提示：每样商品有多件，即同样商品可以装入多件
+ * 提示：每样商品有无数件，即同样商品可以装入多件
  *
  * @param {number[]} weights 各样商品的重量
  * @param {number[]} values 各样商品的价值
