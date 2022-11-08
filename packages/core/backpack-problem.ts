@@ -32,7 +32,7 @@ export interface Goods {
  * @returns {number} 背包里可以装入商品的最大价值
  */
 export function getBackpackMaxValueOne(goodsList: Goods[], backpackSize: number): number {
-    const dp = Array(backpackSize + 1).fill(0)
+    const dp: number[] = Array(backpackSize + 1).fill(0)
 
     const goodsCount = goodsList.length
     for (let i = 0; i < goodsCount; i++) {
@@ -60,7 +60,7 @@ export function getBackpackMaxValueTwo(goodsList: Goods[], backpackSize: number)
 
     if (goodsList.length === 0) return 0
 
-    const dp = Array(goodsCount).fill(null).map(
+    const dp: Array<number[]> = Array(goodsCount).fill(null).map(
         () => Array(backpackSize + 1).fill(0)
     )
 
@@ -96,7 +96,7 @@ export function getBackpackMaxValueTwo(goodsList: Goods[], backpackSize: number)
  * @returns {number} 背包里可以装入商品的最大价值
  */
 export function getBackpackMaxValueThree(goodsList: Goods[], backpackSize: number): number {
-    const dp = Array(backpackSize + 1).fill(0)
+    const dp: number[] = Array(backpackSize + 1).fill(0)
 
     const goodsCount = goodsList.length
     for (let i = 0; i < goodsCount; i++) {
@@ -104,6 +104,32 @@ export function getBackpackMaxValueThree(goodsList: Goods[], backpackSize: numbe
 
         for (let j = weight; j <= backpackSize; j++) {
             dp[j] = Math.max(dp[j], dp[j - weight] + value)
+        }
+    }
+
+    return dp[backpackSize]
+}
+
+/**
+ * 求出一个背包里可以装入商品的最大价值
+ * 提示：每样商品数量是有限的，即装入商品时需考虑当前商品的剩余数量
+ *
+ * @param {Goods[]} goodsList 商品集合
+ * @param {number} backpackSize 背包可装入商品的最大重量
+ *
+ * @returns {number} 背包里可以装入商品的最大价值
+ */
+export function getBackpackMaxValueFour(goodsList: Goods[], backpackSize: number): number {
+    const dp: number[] = Array(backpackSize + 1).fill(0)
+
+    const goodsCount = goodsList.length
+    for (let i = 0; i < goodsCount; i++) {
+        const { weight, value, count = 0 } = goodsList[i]
+
+        for (let c = 0; c < count; c++) {
+            for (let j = backpackSize; j >= weight; j--) {
+                dp[j] = Math.max(dp[j], dp[j - weight] + value)
+            }
         }
     }
 
