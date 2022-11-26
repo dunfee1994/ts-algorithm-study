@@ -11,11 +11,13 @@ function getSum(nums: number[]): number {
  * @returns {boolean} 可以拆分返回 true，否则返回 false
  */
 export function canPartitionOne(nums: number[]): boolean {
+    const numsCount = nums.length
+    if (numsCount <= 1) return false
+    
     const sum = getSum(nums)
     if ((sum & 1) !== 0) return false
 
     const halfSum = sum >> 1
-    const numsCount = nums.length
     const dp: boolean[] = Array(halfSum + 1).fill(false)
 
     for (let i = 0; i < numsCount; i++) {
@@ -38,7 +40,7 @@ export function canPartitionOne(nums: number[]): boolean {
  */
 export function canPartitionTwo(nums: number[]): boolean {
     const numsCount = nums.length
-    if (numsCount === 0) return false
+    if (numsCount <= 0) return false
 
     const sum = getSum(nums)
     if ((sum & 1) !== 0) return false

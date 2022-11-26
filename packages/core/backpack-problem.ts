@@ -32,9 +32,13 @@ export interface Goods {
  * @returns {number} 背包里可以装入商品的最大价值
  */
 export function getBackpackMaxValueOne(goodsList: Goods[], backpackSize: number): number {
+    const goodsCount = goodsList.length
+
+    if (goodsCount === 0) return 0
+    if (goodsCount === 1) return goodsList[0].value
+
     const dp: number[] = Array(backpackSize + 1).fill(0)
 
-    const goodsCount = goodsList.length
     for (let i = 0; i < goodsCount; i++) {
         const { weight, value } = goodsList[i]
 
@@ -58,7 +62,8 @@ export function getBackpackMaxValueOne(goodsList: Goods[], backpackSize: number)
 export function getBackpackMaxValueTwo(goodsList: Goods[], backpackSize: number): number {
     const goodsCount = goodsList.length
 
-    if (goodsList.length === 0) return 0
+    if (goodsCount === 0) return 0
+    if (goodsCount === 1) return goodsList[0].value
 
     const dp: Array<number[]> = Array(goodsCount).fill(null).map(
         () => Array(backpackSize + 1).fill(0)
@@ -96,9 +101,13 @@ export function getBackpackMaxValueTwo(goodsList: Goods[], backpackSize: number)
  * @returns {number} 背包里可以装入商品的最大价值
  */
 export function getBackpackMaxValueThree(goodsList: Goods[], backpackSize: number): number {
+    const goodsCount = goodsList.length
+
+    if (goodsCount === 0) return 0
+    if (goodsCount === 1) return goodsList[0].value
+
     const dp: number[] = Array(backpackSize + 1).fill(0)
 
-    const goodsCount = goodsList.length
     for (let i = 0; i < goodsCount; i++) {
         const { weight, value } = goodsList[i]
 
@@ -120,9 +129,17 @@ export function getBackpackMaxValueThree(goodsList: Goods[], backpackSize: numbe
  * @returns {number} 背包里可以装入商品的最大价值
  */
 export function getBackpackMaxValueFour(goodsList: Goods[], backpackSize: number): number {
+    const goodsCount = goodsList.length
+
+    if (goodsCount === 0) return 0
+
+    if (goodsCount === 1) {
+        const [goods] = goodsList
+        return goods.count > 0 ? goods.value : 0
+    }
+
     const dp: number[] = Array(backpackSize + 1).fill(0)
 
-    const goodsCount = goodsList.length
     for (let i = 0; i < goodsCount; i++) {
         const { weight, value, count = 0 } = goodsList[i]
 
