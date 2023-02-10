@@ -40,7 +40,7 @@ export function canPartitionOne(nums: number[]): boolean {
  */
 export function canPartitionTwo(nums: number[]): boolean {
     const numsCount = nums.length
-    if (numsCount <= 0) return false
+    if (numsCount <= 1) return false
 
     const sum = getSum(nums)
     if ((sum & 1) !== 0) return false
@@ -50,10 +50,7 @@ export function canPartitionTwo(nums: number[]): boolean {
         () => Array(halfSum + 1).fill(false)
     )
 
-    const [firstNum] = nums
-    for (let j = 1; j <= halfSum; j++) {
-        dp[0][j] = firstNum === j
-    }
+    dp[0][nums[0]] = true
 
     for (let i = 1; i < numsCount; i++) {
         const num = nums[i]

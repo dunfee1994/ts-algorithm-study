@@ -32,8 +32,9 @@ export interface Goods {
  * @returns {number} 背包里可以装入商品的最大价值
  */
 export function getBackpackMaxValueOne(goodsList: Goods[], backpackSize: number): number {
-    const goodsCount = goodsList.length
+    if (backpackSize === 0) return 0
 
+    const goodsCount = goodsList.length
     if (goodsCount === 0) return 0
     if (goodsCount === 1) return goodsList[0].value
 
@@ -60,8 +61,9 @@ export function getBackpackMaxValueOne(goodsList: Goods[], backpackSize: number)
  * @returns {number} 背包里可以装入商品的最大价值
  */
 export function getBackpackMaxValueTwo(goodsList: Goods[], backpackSize: number): number {
-    const goodsCount = goodsList.length
+    if (backpackSize === 0) return 0
 
+    const goodsCount = goodsList.length
     if (goodsCount === 0) return 0
     if (goodsCount === 1) return goodsList[0].value
 
@@ -101,8 +103,9 @@ export function getBackpackMaxValueTwo(goodsList: Goods[], backpackSize: number)
  * @returns {number} 背包里可以装入商品的最大价值
  */
 export function getBackpackMaxValueThree(goodsList: Goods[], backpackSize: number): number {
-    const goodsCount = goodsList.length
+    if (backpackSize === 0) return 0
 
+    const goodsCount = goodsList.length
     if (goodsCount === 0) return 0
     if (goodsCount === 1) return goodsList[0].value
 
@@ -129,10 +132,10 @@ export function getBackpackMaxValueThree(goodsList: Goods[], backpackSize: numbe
  * @returns {number} 背包里可以装入商品的最大价值
  */
 export function getBackpackMaxValueFour(goodsList: Goods[], backpackSize: number): number {
+    if (backpackSize === 0) return 0
+
     const goodsCount = goodsList.length
-
     if (goodsCount === 0) return 0
-
     if (goodsCount === 1) {
         const [goods] = goodsList
         return goods.count > 0 ? goods.value : 0
