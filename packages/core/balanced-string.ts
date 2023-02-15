@@ -3,7 +3,7 @@ function idx(c: string): number {
 }
 
 function check(cnt: number[], partial: number): boolean {
-    return cnt.every(item => item === partial)
+    return cnt.every(item => item <= partial)
 }
 
 /**
@@ -21,7 +21,7 @@ function check(cnt: number[], partial: number): boolean {
  *
  * @returns {number} 待替换子串的最小可能长度
  */
-export function balancedString(s: string): number {
+export default function balancedString(s: string): number {
     const times = 4
     const len = s.length
 
