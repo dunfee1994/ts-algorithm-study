@@ -1,6 +1,7 @@
 /**
  * 给你一个整数数组 nums 和一个整数 k，
- * 判断数组中是否存在两个 不同的索引 i 和 j，满足 nums[i] == nums[j] 且 abs(i - j) <= k。
+ * 判断数组中是否存在两个不同的索引 i 和 j，
+ * 满足 nums[i] == nums[j] 且 abs(i - j) <= k。
  *
  * @param {number[]} nums 给定整数数组 nums
  *
