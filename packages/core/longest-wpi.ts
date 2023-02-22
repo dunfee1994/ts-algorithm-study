@@ -8,7 +8,7 @@
  * @returns {number}「表现良好时间段」的最长持续天数
  */
 export default function longestWPI(hours: number[]): number {
-    const map = new Map()
+    const map = new Map<number, number>()
 
     let s = 0
     let res = 0

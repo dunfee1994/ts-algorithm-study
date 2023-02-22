@@ -16,7 +16,7 @@ export function intersectMap(nums1: number[], nums2: number[]): number[] {
         return intersectMap(nums2, nums1)
     }
 
-    const map = new Map()
+    const map = new Map<number, number>()
     nums1.forEach(item => {
         map.set(item, map.has(item) ? map.get(item) + 1 : 1)
     })

@@ -28,7 +28,7 @@ export function containsNearbyDuplicateSet(nums: number[], k: number): boolean {
 }
 
 export function containsNearbyDuplicateMap(nums: number[], k: number): boolean {
-    const map = new Map()
+    const map = new Map<number, number>()
 
     for (let i = 0, len = nums.length; i < len; i++) {
         const num = nums[i]
