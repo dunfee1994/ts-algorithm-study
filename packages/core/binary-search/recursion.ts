@@ -12,7 +12,7 @@ export default function binarySearchRecursion(nums: number[] = [], n?: number): 
     function _recursion(leftIndex: number, rightIndex: number): number {
         if (leftIndex > rightIndex) return -1
 
-        const midIndex = (leftIndex + rightIndex) / 2 >>> 0
+        const midIndex = leftIndex + (rightIndex - leftIndex >> 1)
         const midValue = nums[midIndex]
 
         let _res: number = -1

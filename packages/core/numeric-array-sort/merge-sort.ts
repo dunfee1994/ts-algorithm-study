@@ -29,7 +29,7 @@ function merge(leftList: number[], rightList: number[]): number[] {
 export default function mergeSort(list: number[]): number[] {
     if (new Set(list).size <= 1) return list
 
-    const midIndex = list.length / 2 >>> 0
+    const midIndex = list.length >> 1
 
     const rightList = list.slice(midIndex)
     const leftList = list.slice(0, midIndex)

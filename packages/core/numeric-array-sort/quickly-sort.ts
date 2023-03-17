@@ -1,7 +1,7 @@
 import swap from './swap'
 
 function partition(list: number[], left: number, right: number): number {
-    const pivot = list[(left + right) / 2 >>> 0]
+    const pivot = list[left + (right - left >> 1)]
 
     while (left <= right) {
         while (list[left] < pivot) left++

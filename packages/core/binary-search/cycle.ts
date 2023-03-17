@@ -13,7 +13,7 @@ export default function binarySearchCycle(nums: number[] = [], n?: number): numb
     let rightIndex = nums.length - 1
 
     while (leftIndex <= rightIndex) {
-        const midIndex = (leftIndex + rightIndex) / 2 >>> 0
+        const midIndex = leftIndex + (rightIndex - leftIndex >> 1)
         const midValue = nums[midIndex]
 
         if (midValue < n) {
