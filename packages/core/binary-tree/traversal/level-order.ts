@@ -10,8 +10,8 @@ export function levelOrderI(root: TreeNode | null): number[] {
     const stack: TreeNode[] = [root]
     const res: number[] = []
 
-    while (stack.length > 0) {
-        const curNode = stack.shift()
+    for (let idx = 0; idx < stack.length; idx++) {
+        const curNode = stack[idx]
 
         res.push(curNode.val)
 
@@ -33,29 +33,83 @@ export function levelOrderI(root: TreeNode | null): number[] {
 export function levelOrderII(root: TreeNode | null): number[][] {
     if (root === null) return []
 
-    const stack: TreeNode[] = [root]
-    const res: number[][] = []
+    let res: number[][] = []
+    let curLevelStack: TreeNode[] = [root]
 
-    while (stack.length > 0) {
+    while (curLevelStack.length > 0) {
         const tmp: number[] = []
+        const nextLevelStack: TreeNode[] = []
 
-        for (let i = stack.length - 1; i >= 0; i--) {
-            const curNode = stack.shift()
+        for (let idx = 0, len = curLevelStack.length; idx < len; idx++) {
+            const curNode = curLevelStack[idx]
 
             tmp.push(curNode.val)
 
             if (curNode.left !== null) {
-                stack.push(curNode.left)
+                nextLevelStack.push(curNode.left)
             }
             if (curNode.right !== null) {
-                stack.push(curNode.right)
+                nextLevelStack.push(curNode.right)
             }
         }
 
         res.push(tmp)
+        curLevelStack = nextLevelStack
     }
 
     return res
+}
+
+/**
+ * 从下到上打印出二叉树的每个节点，
+ * 同一层的节点按从左到右的顺序打印，每一层打印到一行
+ */
+export function levelOrderIII(root: TreeNode | null): number[][] {
+    if (root === null) return []
+
+    const generate = (root: TreeNode): [Map<number, number[]>, number] => {
+        const map = new Map<number, number[]>()
+
+        let depth: number = 1
+        let curLevelStack: TreeNode[] = [root]
+
+        for (; curLevelStack.length > 0; depth++) {
+            const nextLevelStack: TreeNode[] = []
+
+            for (let idx = 0, len = curLevelStack.length; idx < len; idx++) {
+                const curNode = curLevelStack[idx]
+
+                if (map.has(depth)) {
+                    map.get(depth).push(curNode.val)
+                } else {
+                    map.set(depth, [curNode.val])
+                }
+
+                if (curNode.left !== null) {
+                    nextLevelStack.push(curNode.left)
+                }
+                if (curNode.right !== null) {
+                    nextLevelStack.push(curNode.right)
+                }
+            }
+
+            curLevelStack = nextLevelStack
+        }
+
+        return [map, depth]
+    }
+
+    const transform = (map: Map<number, number[]>, depth: number): number[][] => {
+        const ans: number[][] = []
+
+        for (let d = depth - 1; d > 0; d--) {
+            ans.push(map.get(d))
+        }
+
+        return ans
+    }
+
+    return transform.apply(null, generate(root))
 }
 
 /**
@@ -65,30 +119,32 @@ export function levelOrderII(root: TreeNode | null): number[][] {
  * 第三行再按照从左到右的顺序打印，
  * 其他行以此类推
  */
-export function levelOrderIII(root: TreeNode | null): number[][] {
+export function levelOrderIV(root: TreeNode | null): number[][] {
     if (root === null) return []
 
-    const stack: TreeNode[] = [root]
-    const res: number[][] = []
+    let res: number[][] = []
+    let curLevelStack: TreeNode[] = [root]
 
-    for (let bool = true; stack.length > 0; bool = !bool) {
+    for (let bool = true; curLevelStack.length > 0; bool = !bool) {
         const tmp: number[] = []
-        const endI = stack.length - 1
+        const nextLevelStack: TreeNode[] = []
+        const endIdx = curLevelStack.length - 1
 
-        for (let i = endI; i >= 0; i--) {
-            const curNode = stack.shift()
+        for (let idx = 0; idx <= endIdx; idx++) {
+            const curNode = curLevelStack[idx]
 
-            tmp[bool ? endI - i : i] = curNode.val
+            tmp[bool ? endIdx - idx : idx] = curNode.val
 
             if (curNode.left !== null) {
-                stack.push(curNode.left)
+                nextLevelStack.push(curNode.left)
             }
             if (curNode.right !== null) {
-                stack.push(curNode.right)
+                nextLevelStack.push(curNode.right)
             }
         }
 
         res.push(tmp)
+        curLevelStack = nextLevelStack
     }
 
     return res
