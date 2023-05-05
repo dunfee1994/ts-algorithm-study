@@ -33,7 +33,7 @@ export default class MinHeap {
         return result
     }
 
-    bubbleUp(index: number) {
+    private bubbleUp(index: number) {
         for (let parentIndex = index; index > 0; index = parentIndex) {
             parentIndex = (index - 1) >> 1
 
@@ -45,7 +45,7 @@ export default class MinHeap {
         }
     }
 
-    bubbleDown(index: number) {
+    private bubbleDown(index: number) {
         const lastIndex = this.size - 1
 
         for (let findIndex = index; true; index = findIndex) {
