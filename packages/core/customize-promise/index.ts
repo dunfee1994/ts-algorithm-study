@@ -261,6 +261,8 @@ class CustomiszePromise<T> {
             let remaining = 0
             const createSettleHanlder = (status: CustomiszePromiseStatusEnum.FULFILLED | CustomiszePromiseStatusEnum.REJECTED) => {
                 return (idx: number) => {
+                    remaining++
+
                     return (valueOrReason: unknown) => {
                         settleStrategy[status](valueOrReason, idx)
 
@@ -284,6 +286,7 @@ class CustomiszePromise<T> {
                 try {
                     value.then(resolver(idx), rejecter(idx))
                 } catch (error) {
+                    remaining -= 2
                     settleStrategy[CustomiszePromiseStatusEnum.REJECTED](error, idx)
                 }
             })
