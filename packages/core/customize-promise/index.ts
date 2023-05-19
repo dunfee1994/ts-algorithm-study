@@ -172,16 +172,16 @@ class CustomiszePromise<T> {
      */
     static all<T extends readonly unknown[] | []>(values: T): CustomiszePromise<AllCustomiszePromiseT<T>> {
         return new CustomiszePromise<AllCustomiszePromiseT<T>>((resolve, reject) => {
-            let ramaining = 0
+            let remaining = 0
 
             const results: Awaited<T[keyof T]>[] = []
             const resolver = (idx: number) => {
-                ramaining++
+                remaining++
 
                 return (value: unknown) => {
                     results[idx] = value as Awaited<T[keyof T]>
 
-                    if (--ramaining === 0) {
+                    if (--remaining === 0) {
                         resolve(results as AllCustomiszePromiseT<T>)
                     }
                 }
@@ -201,7 +201,7 @@ class CustomiszePromise<T> {
                 }
             })
 
-            if (ramaining === 0) {
+            if (remaining === 0) {
                 resolve(results as AllCustomiszePromiseT<T>)
             }
         })
