@@ -1,8 +1,12 @@
 const _objectToString = Object.prototype.toString
 const _funcToString = Function.prototype.toString
 
-function isObjectLike(obj: any): boolean {
+export function isObjectLike(obj: any): boolean {
     return obj !== null && typeof obj === 'object'
+}
+
+export function isDef<T>(v: T): v is NonNullable<T> {
+    return v !== undefined && v !== null
 }
 
 /**
@@ -49,6 +53,17 @@ export function isArray(obj: any): boolean {
 export function isInteger(obj: any): boolean {
     if (Number.isInteger) return Number.isInteger(obj)
     return typeof obj === 'number' && isFinite(obj) && Math.floor(obj) === obj
+}
+
+/**
+ * @description 判断 obj 的数据类型是否为 Iterable
+ *
+ * @param {*} obj
+ *
+ * @returns {boolean} obj 的数据类型为 Iterable 则返回 true，否则返回 false
+ */
+export function isIterable(obj: any): obj is Iterable<any> {
+    return isObjectLike(obj) && typeof obj[Symbol.iterator] === 'function'
 }
 
 /**
