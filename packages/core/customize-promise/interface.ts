@@ -1,4 +1,4 @@
-import { CustomiszePromiseStatusEnum } from './enum'
+import { CustomizePromiseStatusEnum } from './enum'
 
 export type ResolveFn<T> = (value: T | PromiseLike<T>) => void
 export type RejectFn = (reason?: any) => void
@@ -9,7 +9,7 @@ export type OnRejectionBaseFn<TResult = never> = (reason: any) => TResult | Prom
 export type OnFulfilledFn<T, TResult = T> = OnFulfilledBaseFn<T, TResult> | PromiseLike<TResult>
 export type OnRejectionFn<TResult = never> = OnRejectionBaseFn<TResult> | PromiseLike<TResult>
 
-export type AllCustomiszePromiseT<P> = { -readonly [K in keyof P]: Awaited<P[K]> }
+export type AllCustomizePromiseT<P> = { -readonly [K in keyof P]: Awaited<P[K]> }
 
 export interface ThenCallback<T = any, TResult1 = T, TResult2 = T> {
     resolve: ResolveFn<TResult1 | TResult2>,
@@ -19,15 +19,15 @@ export interface ThenCallback<T = any, TResult1 = T, TResult2 = T> {
 }
 
 export interface CustomizePromiseFulfilledResult<T> {
-    status: CustomiszePromiseStatusEnum.FULFILLED,
+    status: CustomizePromiseStatusEnum.FULFILLED,
     value: T
 }
 
 export interface CustomizePromiseRejectedReuslt {
-    status: CustomiszePromiseStatusEnum.REJECTED,
+    status: CustomizePromiseStatusEnum.REJECTED,
     reason: any
 }
 
 export type CustomizePromiseSettledResult<T> = CustomizePromiseFulfilledResult<T> | CustomizePromiseRejectedReuslt
 
-export type AllSettledCustomiszePromiseT<P> = { -readonly [K in keyof P]: CustomizePromiseSettledResult<Awaited<P[K]>> }
+export type AllSettledCustomizePromiseT<P> = { -readonly [K in keyof P]: CustomizePromiseSettledResult<Awaited<P[K]>> }

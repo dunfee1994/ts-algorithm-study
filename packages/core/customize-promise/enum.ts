@@ -1,16 +1,16 @@
-export enum CustomiszePromiseStatusEnum {
+export enum CustomizePromiseStatusEnum {
     /**
-     * The CustomiszePromise is pending.
+     * The CustomizePromise is pending.
      */
     PENDING = 'pending',
 
     /**
-     * The CustomiszePromise is rejected.
+     * The CustomizePromise is rejected.
      */
     REJECTED = 'rejected',
 
     /**
-     * The CustomiszePromise is resolved.
+     * The CustomizePromise is resolved.
      */
     FULFILLED = 'fulfilled'
 }

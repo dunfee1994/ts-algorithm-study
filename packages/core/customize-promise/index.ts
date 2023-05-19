@@ -6,60 +6,60 @@ import {
     OnRejectionFn,
     OnFulfilledBaseFn,
     OnRejectionBaseFn,
-    AllCustomiszePromiseT,
-    AllSettledCustomiszePromiseT,
+    AllCustomizePromiseT,
+    AllSettledCustomizePromiseT,
     CustomizePromiseRejectedReuslt,
     CustomizePromiseFulfilledResult
 } from './interface'
 
-import { CustomiszePromiseStatusEnum } from './enum'
+import { CustomizePromiseStatusEnum } from './enum'
 
 import { isFunction } from '../utils'
 import { isPromiseLike, appendTaskIntoMicroTaskQueue } from './_utils'
 
-class CustomiszePromise<T> {
+class CustomizePromise<T> {
     /**
      * A reference to the prototype.
      */
-    readonly prototype: CustomiszePromise<any>
+    readonly prototype: CustomizePromise<any>
 
 
     /**
-     * The value when the CustomiszePromise is resolved.
+     * The value when the CustomizePromise is resolved.
      */
     #value: T
 
     /**
-     * The reason when the CustomiszePromise is rejected.
+     * The reason when the CustomizePromise is rejected.
      */
     #reason: any
 
     /**
-     * The status of the CustomiszePromise.
+     * The status of the CustomizePromise.
      */
-    #status: CustomiszePromiseStatusEnum = CustomiszePromiseStatusEnum.PENDING
+    #status: CustomizePromiseStatusEnum = CustomizePromiseStatusEnum.PENDING
 
     /**
-     * The `then` callback queue for the resolution and/or rejection of the CustomiszePromise.
+     * The `then` callback queue for the resolution and/or rejection of the CustomizePromise.
      */
     #thenCallbackQueue: ThenCallback<T, any, any>[] = []
 
     /**
-     * Creates a new CustomiszePromise.
-     * @param executor A callback used to initialize the customiszePromise. This callback is passed two arguments:
-     * a resolve callback used to resolve the customiszePromise with a value or the result of another customiszePromise,
-     * and a reject callback used to reject the customiszePromise with a provided reason or error.
+     * Creates a new CustomizePromise.
+     * @param executor A callback used to initialize the customizePromise. This callback is passed two arguments:
+     * a resolve callback used to resolve the customizePromise with a value or the result of another customizePromise,
+     * and a reject callback used to reject the customizePromise with a provided reason or error.
      */
     constructor(executor: (resolve: ResolveFn<T>, reject: RejectFn) => void) {
         const resolve: ResolveFn<T> = value => {
-            if (this.#status === CustomiszePromiseStatusEnum.PENDING) {
+            if (this.#status === CustomizePromiseStatusEnum.PENDING) {
                 if (isPromiseLike(value)) {
                     value.then(resolve, reject)
 
                     return
                 }
 
-                this.#status = CustomiszePromiseStatusEnum.FULFILLED
+                this.#status = CustomizePromiseStatusEnum.FULFILLED
                 this.#value = value
 
                 this.#publish()
@@ -67,8 +67,8 @@ class CustomiszePromise<T> {
         }
 
         const reject: RejectFn = reason => {
-            if (this.#status === CustomiszePromiseStatusEnum.PENDING) {
-                this.#status = CustomiszePromiseStatusEnum.REJECTED
+            if (this.#status === CustomizePromiseStatusEnum.PENDING) {
+                this.#status = CustomizePromiseStatusEnum.REJECTED
                 this.#reason = reason
 
                 this.#publish()
@@ -84,13 +84,13 @@ class CustomiszePromise<T> {
 
 
     /**
-     * Attaches callbacks for the resolution and/or rejection of the CustomiszePromise.
-     * @param onFulfilled The callback to execute when the CustomiszePromise is resolved.
-     * @param onRejection The callback to execute when the CustomiszePromise is rejected.
-     * @returns A CustomiszePromise for the completion of which ever callback is executed.
+     * Attaches callbacks for the resolution and/or rejection of the CustomizePromise.
+     * @param onFulfilled The callback to execute when the CustomizePromise is resolved.
+     * @param onRejection The callback to execute when the CustomizePromise is rejected.
+     * @returns A CustomizePromise for the completion of which ever callback is executed.
      */
-    then<TResult1 = T, TResult2 = never>(onFulfilled?: OnFulfilledFn<T, TResult1>, onRejection?: OnRejectionFn<TResult2>): CustomiszePromise<TResult1 | TResult2> {
-        return new CustomiszePromise<TResult1 | TResult2>((resolve, reject) => {
+    then<TResult1 = T, TResult2 = never>(onFulfilled?: OnFulfilledFn<T, TResult1>, onRejection?: OnRejectionFn<TResult2>): CustomizePromise<TResult1 | TResult2> {
+        return new CustomizePromise<TResult1 | TResult2>((resolve, reject) => {
             this.#thenCallbackQueue.push({
                 onFulfilled,
                 onRejection,
@@ -104,27 +104,27 @@ class CustomiszePromise<T> {
 
 
     /**
-     * Attaches a callback for only the rejection of the CustomiszePromise.
-     * @param onRejection The callback to execute when the CustomiszePromise is rejected.
-     * @returns A CustomiszePromise for the completion of the callback.
+     * Attaches a callback for only the rejection of the CustomizePromise.
+     * @param onRejection The callback to execute when the CustomizePromise is rejected.
+     * @returns A CustomizePromise for the completion of the callback.
      */
-    catch<TResult = never>(onRejection?: OnRejectionFn<TResult>): CustomiszePromise<T | TResult> {
+    catch<TResult = never>(onRejection?: OnRejectionFn<TResult>): CustomizePromise<T | TResult> {
         return this.then<T, TResult>(undefined, onRejection)
     }
 
 
     /**
-     * Attaches a callback that is invoked when the CustomiszePromise is settled (fulfilled or rejected). The
+     * Attaches a callback that is invoked when the CustomizePromise is settled (fulfilled or rejected). The
      * resolved value cannot be modified from the callback.
-     * @param onFinally The callback to execute when the CustomiszePromise is settled (fulfilled or rejected).
-     * @returns A CustomiszePromise for the completion of the callback.
+     * @param onFinally The callback to execute when the CustomizePromise is settled (fulfilled or rejected).
+     * @returns A CustomizePromise for the completion of the callback.
      */
-    finally(onFinally?: () => void): CustomiszePromise<T> {
+    finally(onFinally?: () => void): CustomizePromise<T> {
         if (!isFunction(onFinally)) return this
 
         return this.then(
-            value => CustomiszePromise.resolve(onFinally()).then(() => value),
-            reason => CustomiszePromise.resolve(onFinally()).then(() => {
+            value => CustomizePromise.resolve(onFinally()).then(() => value),
+            reason => CustomizePromise.resolve(onFinally()).then(() => {
                 throw reason
             })
         )
@@ -132,46 +132,46 @@ class CustomiszePromise<T> {
 
 
     /**
-     * Creates a new resolved customiszePromise.
-     * @returns A resolved customiszePromise.
+     * Creates a new resolved customizePromise.
+     * @returns A resolved customizePromise.
      */
-    static resolve(): CustomiszePromise<void>
+    static resolve(): CustomizePromise<void>
     /**
-     * Creates a new resolved customiszePromise for the provided value.
+     * Creates a new resolved customizePromise for the provided value.
      * @param value The provided value.
-     * @returns A customiszePromise whose internal state matches the provided value.
+     * @returns A customizePromise whose internal state matches the provided value.
      */
-    static resolve<T>(value: T): CustomiszePromise<Awaited<T>>
+    static resolve<T>(value: T): CustomizePromise<Awaited<T>>
     /**
-     * Creates a new resolved customiszePromise for the provided value.
+     * Creates a new resolved customizePromise for the provided value.
      * @param value The provided value.
-     * @returns A customiszePromise whose internal state matches the provided value.
+     * @returns A customizePromise whose internal state matches the provided value.
      */
-    static resolve<T>(value: T | PromiseLike<T>): CustomiszePromise<Awaited<T>>
-    static resolve<T>(value?: T | PromiseLike<T>): CustomiszePromise<Awaited<T>> {
-        if (value && value instanceof CustomiszePromise) return value
-        return new CustomiszePromise<Awaited<T>>((resolve: (value: Awaited<T>) => void) => resolve(value as Awaited<T>))
+    static resolve<T>(value: T | PromiseLike<T>): CustomizePromise<Awaited<T>>
+    static resolve<T>(value?: T | PromiseLike<T>): CustomizePromise<Awaited<T>> {
+        if (value && value instanceof CustomizePromise) return value
+        return new CustomizePromise<Awaited<T>>((resolve: (value: Awaited<T>) => void) => resolve(value as Awaited<T>))
     }
 
 
     /**
-     * Creates a new rejected customiszePromise for the provided reason.
-     * @param reason The reason the customiszePromise was rejected.
-     * @returns A new rejected CustomiszePromise.
+     * Creates a new rejected customizePromise for the provided reason.
+     * @param reason The reason the customizePromise was rejected.
+     * @returns A new rejected CustomizePromise.
      */
-    static reject<T = never>(reason?: any): CustomiszePromise<T> {
-        return new CustomiszePromise((rsolve, reject) => reject(reason))
+    static reject<T = never>(reason?: any): CustomizePromise<T> {
+        return new CustomizePromise<T>((rsolve, reject) => reject(reason))
     }
 
 
     /**
-     * Creates a CustomiszePromise that is resolved with an array of results when all of the provided Promises
-     * resolve, or rejected when any CustomiszePromise is rejected.
+     * Creates a CustomizePromise that is resolved with an array of results when all of the provided Promises
+     * resolve, or rejected when any CustomizePromise is rejected.
      * @param values An array of Promises.
-     * @returns A new CustomiszePromise.
+     * @returns A new CustomizePromise.
      */
-    static all<T extends readonly unknown[] | []>(values: T): CustomiszePromise<AllCustomiszePromiseT<T>> {
-        return new CustomiszePromise<AllCustomiszePromiseT<T>>((resolve, reject) => {
+    static all<T extends readonly unknown[] | []>(values: T): CustomizePromise<AllCustomizePromiseT<T>> {
+        return new CustomizePromise<AllCustomizePromiseT<T>>((resolve, reject) => {
             let remaining = 0
 
             const results: Awaited<T[keyof T]>[] = []
@@ -182,7 +182,7 @@ class CustomiszePromise<T> {
                     results[idx] = value as Awaited<T[keyof T]>
 
                     if (--remaining === 0) {
-                        resolve(results as AllCustomiszePromiseT<T>)
+                        resolve(results as AllCustomizePromiseT<T>)
                     }
                 }
             }
@@ -202,20 +202,20 @@ class CustomiszePromise<T> {
             })
 
             if (remaining === 0) {
-                resolve(results as AllCustomiszePromiseT<T>)
+                resolve(results as AllCustomizePromiseT<T>)
             }
         })
     }
 
 
     /**
-     * Creates a CustomiszePromise that is resolved or rejected when any of the provided Promises are resolved
+     * Creates a CustomizePromise that is resolved or rejected when any of the provided Promises are resolved
      * or rejected.
      * @param values An array of Promises.
-     * @returns A new CustomiszePromise.
+     * @returns A new CustomizePromise.
      */
-    static race<T extends readonly unknown[] | []>(values: T): CustomiszePromise<Awaited<T[number]>> {
-        return new CustomiszePromise((resolve, reject) => {
+    static race<T extends readonly unknown[] | []>(values: T): CustomizePromise<Awaited<T[number]>> {
+        return new CustomizePromise<Awaited<T[number]>>((resolve, reject) => {
             values.forEach(value => {
                 if (!isPromiseLike(value)) {
                     resolve(value as Awaited<T[number]>)
@@ -234,32 +234,32 @@ class CustomiszePromise<T> {
 
 
     /**
-     * Creates a CustomiszePromise that is resolved with an array of results when all
+     * Creates a CustomizePromise that is resolved with an array of results when all
      * of the provided Promises resolve or reject.
      * @param values An array of Promises.
-     * @returns A new CustomiszePromise.
+     * @returns A new CustomizePromise.
      */
-    static allSettled<T extends readonly unknown[] | []>(values: T): CustomiszePromise<AllSettledCustomiszePromiseT<T>> {
-        return new CustomiszePromise<AllSettledCustomiszePromiseT<T>>(resolve => {
+    static allSettled<T extends readonly unknown[] | []>(values: T): CustomizePromise<AllSettledCustomizePromiseT<T>> {
+        return new CustomizePromise<AllSettledCustomizePromiseT<T>>(resolve => {
             const results: PromiseSettledResult<Awaited<T[keyof T]>>[] = []
 
             const settleStrategy = {
-                [CustomiszePromiseStatusEnum.FULFILLED]: (value: unknown, idx: number) => {
+                [CustomizePromiseStatusEnum.FULFILLED]: (value: unknown, idx: number) => {
                     results[idx] = {
-                        status: CustomiszePromiseStatusEnum.FULFILLED,
+                        status: CustomizePromiseStatusEnum.FULFILLED,
                         value
                     } as CustomizePromiseFulfilledResult<Awaited<T[keyof T]>>
                 },
-                [CustomiszePromiseStatusEnum.REJECTED]: (reason: any, idx: number) => {
+                [CustomizePromiseStatusEnum.REJECTED]: (reason: any, idx: number) => {
                     results[idx] = {
-                        status: CustomiszePromiseStatusEnum.REJECTED,
+                        status: CustomizePromiseStatusEnum.REJECTED,
                         reason
                     } as CustomizePromiseRejectedReuslt
                 }
             }
 
             let remaining = 0
-            const createSettleHanlder = (status: CustomiszePromiseStatusEnum.FULFILLED | CustomiszePromiseStatusEnum.REJECTED) => {
+            const createSettleHanlder = (status: CustomizePromiseStatusEnum.FULFILLED | CustomizePromiseStatusEnum.REJECTED) => {
                 return (idx: number) => {
                     remaining++
 
@@ -267,18 +267,18 @@ class CustomiszePromise<T> {
                         settleStrategy[status](valueOrReason, idx)
 
                         if ((remaining -= 2) === 0) {
-                            resolve(results as AllSettledCustomiszePromiseT<T>)
+                            resolve(results as AllSettledCustomizePromiseT<T>)
                         }
                     }
                 }
             }
 
-            const resolver = createSettleHanlder(CustomiszePromiseStatusEnum.FULFILLED)
-            const rejecter = createSettleHanlder(CustomiszePromiseStatusEnum.REJECTED)
+            const resolver = createSettleHanlder(CustomizePromiseStatusEnum.FULFILLED)
+            const rejecter = createSettleHanlder(CustomizePromiseStatusEnum.REJECTED)
 
             values.forEach((value, idx) => {
                 if (!isPromiseLike(value)) {
-                    settleStrategy[CustomiszePromiseStatusEnum.FULFILLED](value, idx)
+                    settleStrategy[CustomizePromiseStatusEnum.FULFILLED](value, idx)
 
                     return
                 }
@@ -287,26 +287,26 @@ class CustomiszePromise<T> {
                     value.then(resolver(idx), rejecter(idx))
                 } catch (error) {
                     remaining -= 2
-                    settleStrategy[CustomiszePromiseStatusEnum.REJECTED](error, idx)
+                    settleStrategy[CustomizePromiseStatusEnum.REJECTED](error, idx)
                 }
             })
 
             if (remaining === 0) {
-                resolve(results as AllSettledCustomiszePromiseT<T>)
+                resolve(results as AllSettledCustomizePromiseT<T>)
             }
         })
     }
 
 
     #publish() {
-        if (this.#status !== CustomiszePromiseStatusEnum.PENDING) {
+        if (this.#status !== CustomizePromiseStatusEnum.PENDING) {
             this.#thenCallbackQueue.forEach(this.#invokeThenCallback.bind(this))
             this.#thenCallbackQueue = []
         }
     }
 
     #invokeThenCallback(thenCallback: ThenCallback<T, any, any>) {
-        const fulfilled = this.#status === CustomiszePromiseStatusEnum.FULFILLED
+        const fulfilled = this.#status === CustomizePromiseStatusEnum.FULFILLED
         const callback = fulfilled ? thenCallback.onFulfilled : thenCallback.onRejection
 
         const resolve = thenCallback.resolve
@@ -339,4 +339,4 @@ class CustomiszePromise<T> {
     }
 }
 
-export default CustomiszePromise
+export default CustomizePromise
