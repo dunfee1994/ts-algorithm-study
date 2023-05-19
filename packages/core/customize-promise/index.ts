@@ -224,7 +224,7 @@ class CustomiszePromise<T> {
                 }
 
                 try {
-                    value.then(v => reject(v as Awaited<T[number]>), reject)
+                    value.then(v => resolve(v as Awaited<T[number]>), reject)
                 } catch (error) {
                     reject(error)
                 }
