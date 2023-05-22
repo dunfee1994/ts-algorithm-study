@@ -148,9 +148,9 @@ class CustomizePromise<T> {
      * @returns A customizePromise whose internal state matches the provided value.
      */
     static resolve<T>(value: T | PromiseLike<T>): CustomizePromise<Awaited<T>>
-    static resolve<T>(value?: T | PromiseLike<T>): CustomizePromise<Awaited<T>> {
+    static resolve(value?: any | PromiseLike<any>): CustomizePromise<Awaited<any>> {
         if (value && value instanceof CustomizePromise) return value
-        return new CustomizePromise<Awaited<T>>((resolve: (value: Awaited<T>) => void) => resolve(value as Awaited<T>))
+        return new CustomizePromise<Awaited<any>>((resolve: (value: Awaited<any>) => void) => resolve(value as Awaited<any>))
     }
 
 
