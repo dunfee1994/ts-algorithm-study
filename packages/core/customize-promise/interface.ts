@@ -9,8 +9,6 @@ export type OnRejectionBaseFn<TResult = never> = (reason: any) => TResult | Prom
 export type OnFulfilledFn<T, TResult = T> = OnFulfilledBaseFn<T, TResult> | PromiseLike<TResult>
 export type OnRejectionFn<TResult = never> = OnRejectionBaseFn<TResult> | PromiseLike<TResult>
 
-export type AllCustomizePromiseT<P> = { -readonly [K in keyof P]: Awaited<P[K]> }
-
 export interface ThenCallback<T = any, TResult1 = T, TResult2 = T> {
     resolve: ResolveFn<TResult1 | TResult2>,
     reject: RejectFn,
@@ -29,5 +27,3 @@ export interface CustomizePromiseRejectedReuslt {
 }
 
 export type CustomizePromiseSettledResult<T> = CustomizePromiseFulfilledResult<T> | CustomizePromiseRejectedReuslt
-
-export type AllSettledCustomizePromiseT<P> = { -readonly [K in keyof P]: CustomizePromiseSettledResult<Awaited<P[K]>> }
