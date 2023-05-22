@@ -4,7 +4,6 @@ export default abstract class AbstractHeap<T> {
 
     constructor(data: T[] = []) {
         this.data = data || []
-        this.heapify()
     }
 
     peek(): T | null {
@@ -28,6 +27,12 @@ export default abstract class AbstractHeap<T> {
         }
 
         return ans
+    }
+
+    heapify() {
+        for (let idx = 1; idx < this.size; idx++) {
+            this.bubbleUp(idx)
+        }
     }
 
     private bubbleUp(idx: number) {
@@ -57,12 +62,6 @@ export default abstract class AbstractHeap<T> {
             if (idx === findIdx) break
 
             this.swap(idx, findIdx)
-        }
-    }
-
-    private heapify() {
-        for (let idx = 1; idx < this.size; idx++) {
-            this.bubbleUp(idx)
         }
     }
 
