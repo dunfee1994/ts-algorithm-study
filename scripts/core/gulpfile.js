@@ -1,17 +1,20 @@
 const gulp = require('gulp')
 const runCmd = require('./runCmd')
 const compile = require('./compile')
+const argv = require('minimist')(process.argv.slice(2))
 
 const { getConfig } = require('../utils/projectHelper')
 
 let startTime = new Date()
 
 gulp.task('git-push-to-gitee', cb => {
-    runCmd('git', ['push', 'gitee', 'master'], (code, result) => result ? cb(result) : cb())
+    const branch = argv['branch'] || 'master'
+    runCmd('git', ['push', 'gitee', branch], (code, result) => result ? cb(result) : cb())
 })
 
 gulp.task('git-push-to-github', cb => {
-    runCmd('git', ['push', 'origin', 'master'], (code, result) => result? cb(result) : cb())
+    const branch = argv['branch'] || 'master'
+    runCmd('git', ['push', 'origin', branch], (code, result) => result? cb(result) : cb())
 })
 
 gulp.task('git-push', gulp.series(

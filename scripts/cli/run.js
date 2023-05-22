@@ -3,7 +3,7 @@ require('colorful').colorful()
 const gulp = require('gulp')
 const program = require('commander')
 
-program.option('-c --npm-tag <type>', 'add --npm-tag=xxx')
+program.option('--branch <type>', 'add --branch=xxx')
 
 program.on('--help', () => {
     console.log('  Usage:'.to.bold.blue.color)
