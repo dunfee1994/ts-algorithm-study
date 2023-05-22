@@ -90,12 +90,7 @@ class CustomizePromise<T> {
      */
     then<TResult1 = T, TResult2 = never>(onFulfilled?: OnFulfilledFn<T, TResult1>, onRejection?: OnRejectionFn<TResult2>): CustomizePromise<TResult1 | TResult2> {
         return new CustomizePromise<TResult1 | TResult2>((resolve, reject) => {
-            this.#thenCallbackQueue.push({
-                onFulfilled,
-                onRejection,
-                resolve,
-                reject
-            })
+            this.#thenCallbackQueue.push({ onFulfilled, onRejection, resolve, reject })
 
             this.#publish()
         })
@@ -169,18 +164,26 @@ class CustomizePromise<T> {
      * @param values An array of Promises.
      * @returns A new CustomizePromise.
      */
-    static all<T extends readonly unknown[] | []>(values: T): CustomizePromise<{ -readonly [K in keyof T]: Awaited<T[K]> }> {
-        return new CustomizePromise<{ -readonly [K in keyof T]: Awaited<T[K]> }>((resolve, reject) => {
+    static all<T extends readonly unknown[] | []>(values: T): CustomizePromise<{ -readonly [K in keyof T]: Awaited<T[K]> }>
+    /**
+     * Creates a CustomizePromise that is resolved with an array of results when all of the provided Promises
+     * resolve, or rejected when any Promise is rejected.
+     * @param values An iterable of Promises.
+     * @returns A new CustomizePromise.
+     */
+    static all<T>(values: Iterable<T | PromiseLike<T>>): CustomizePromise<Awaited<T>[]>
+    static all(values: any[] | Iterable<any | PromiseLike<any>>): CustomizePromise<Awaited<any>[]> {
+        return new CustomizePromise<Awaited<any>[]>((resolve, reject) => {
             let remaining = 0
 
-            const results: { -readonly [K in keyof T]: T[K]}[] = []
+            const results: unknown[] = []
 
             const setResult = (idx: number, value: unknown) => {
-                results[idx] = value as { -readonly [K in keyof T]: T[K]}
+                results[idx] = value
             }
 
             const resolveResults = () => {
-                resolve(results as { -readonly [K in keyof T]: Awaited<T[K]> })
+                resolve(results as Awaited<any>[])
             }
 
             const resolver = (idx: number) => {
@@ -193,7 +196,7 @@ class CustomizePromise<T> {
                 }
             }
 
-            values.forEach((value, idx) => {
+            Array.from(values).forEach((value, idx) => {
                 if (!isPromiseLike((value))) {
                     setResult(idx, value)
 
@@ -218,13 +221,21 @@ class CustomizePromise<T> {
      * @param values An array of Promises.
      * @returns A new CustomizePromise.
      */
-    static race<T extends readonly unknown[] | []>(values: T): CustomizePromise<Awaited<T[number]>> {
-        return new CustomizePromise<Awaited<T[number]>>((resolve, reject) => {
+    static race<T extends readonly unknown[] | []>(values: T): CustomizePromise<Awaited<T[number]>>
+    /**
+     * Creates a CustomizePromise that is resolved or rejected when any of the provided Promises are resolved
+     * or rejected.
+     * @param values An iterable of Promises.
+     * @returns A new CustomizePromise.
+     */
+    static race<T>(values: Iterable<T | PromiseLike<T>>): CustomizePromise<Awaited<T>>
+    static race(values: any[] | Iterable<any | PromiseLike<any>>): CustomizePromise<Awaited<any>> {
+        return new CustomizePromise<Awaited<any>>((resolve, reject) => {
             const resolveValue = (value: unknown) => {
-                resolve(value as Awaited<T[number]>)
+                resolve(value as Awaited<any>)
             }
 
-            values.forEach(value => {
+            Array.from(values).forEach(value => {
                 if (!isPromiseLike(value)) {
                     resolveValue(value)
 
