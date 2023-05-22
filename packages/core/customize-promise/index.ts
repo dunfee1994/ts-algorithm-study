@@ -160,7 +160,7 @@ class CustomizePromise<T> {
      * @returns A new rejected CustomizePromise.
      */
     static reject<T = never>(reason?: any): CustomizePromise<T> {
-        return new CustomizePromise<T>((rsolve, reject) => reject(reason))
+        return new CustomizePromise<T>((resolve, reject) => reject(reason))
     }
 
 
