@@ -2,10 +2,10 @@ import {
     RejectFn,
     ResolveFn,
     ThenCallback,
+    OnRejectedFn,
     OnFulfilledFn,
-    OnRejectionFn,
+    OnRejectedBaseFn,
     OnFulfilledBaseFn,
-    OnRejectionBaseFn,
     CustomizePromiseSettledResult,
     CustomizePromiseRejectedReuslt,
     CustomizePromiseFulfilledResult
@@ -85,12 +85,12 @@ class CustomizePromise<T> {
     /**
      * Attaches callbacks for the resolution and/or rejection of the CustomizePromise.
      * @param onFulfilled The callback to execute when the CustomizePromise is resolved.
-     * @param onRejection The callback to execute when the CustomizePromise is rejected.
+     * @param onRejected The callback to execute when the CustomizePromise is rejected.
      * @returns A CustomizePromise for the completion of which ever callback is executed.
      */
-    then<TResult1 = T, TResult2 = never>(onFulfilled?: OnFulfilledFn<T, TResult1>, onRejection?: OnRejectionFn<TResult2>): CustomizePromise<TResult1 | TResult2> {
+    then<TResult1 = T, TResult2 = never>(onFulfilled?: OnFulfilledFn<T, TResult1>, onRejected?: OnRejectedFn<TResult2>): CustomizePromise<TResult1 | TResult2> {
         return new CustomizePromise<TResult1 | TResult2>((resolve, reject) => {
-            this.#thenCallbackQueue.push({ onFulfilled, onRejection, resolve, reject })
+            this.#thenCallbackQueue.push({ onFulfilled, onRejected, resolve, reject })
 
             this.#publish()
         })
@@ -99,11 +99,11 @@ class CustomizePromise<T> {
 
     /**
      * Attaches a callback for only the rejection of the CustomizePromise.
-     * @param onRejection The callback to execute when the CustomizePromise is rejected.
+     * @param onRejected The callback to execute when the CustomizePromise is rejected.
      * @returns A CustomizePromise for the completion of the callback.
      */
-    catch<TResult = never>(onRejection?: OnRejectionFn<TResult>): CustomizePromise<T | TResult> {
-        return this.then<T, TResult>(undefined, onRejection)
+    catch<TResult = never>(onRejected?: OnRejectedFn<TResult>): CustomizePromise<T | TResult> {
+        return this.then<T, TResult>(undefined, onRejected)
     }
 
 
@@ -335,7 +335,7 @@ class CustomizePromise<T> {
 
     #invokeThenCallback(thenCallback: ThenCallback<T, any, any>) {
         const fulfilled = this.#status === CustomizePromiseStatusEnum.FULFILLED
-        const callback = fulfilled ? thenCallback.onFulfilled : thenCallback.onRejection
+        const callback = fulfilled ? thenCallback.onFulfilled : thenCallback.onRejected
 
         const resolve = thenCallback.resolve
         const reject = thenCallback.reject
@@ -343,7 +343,7 @@ class CustomizePromise<T> {
         appendTaskIntoMicroTaskQueue(() => {
             try {
                 if (isFunction(callback)) {
-                    const ans = (callback as OnFulfilledBaseFn<T, any> | OnRejectionBaseFn<any>)(fulfilled ? this.#value : this.#reason)
+                    const ans = (callback as OnFulfilledBaseFn<T, any> | OnRejectedBaseFn<any>)(fulfilled ? this.#value : this.#reason)
                     isPromiseLike(ans) ? ans.then(resolve, reject) : resolve(ans)
 
                     return
