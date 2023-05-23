@@ -16,5 +16,5 @@ module.exports = function runCmd(cmd, _args, fn) {
         env: getRunCmdEnv()
     })
 
-    runner.on('close', code => fn && fn(code))
+    runner.on('close', (code, result) => fn && fn(code, result))
 }
