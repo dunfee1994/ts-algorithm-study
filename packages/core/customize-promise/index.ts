@@ -142,9 +142,9 @@ class CustomizePromise<T> {
      * @returns A customizePromise whose internal state matches the provided value.
      */
     static resolve<T>(value: T | PromiseLike<T>): CustomizePromise<Awaited<T>>
-    static resolve(value?: any | PromiseLike<any>): CustomizePromise<Awaited<any>> {
+    static resolve(value?: any | PromiseLike<any>): CustomizePromise<any> {
         if (value && value instanceof CustomizePromise) return value
-        return new CustomizePromise<Awaited<any>>((resolve: (value: Awaited<any>) => void) => resolve(value as Awaited<any>))
+        return new CustomizePromise<any>(resolve => resolve(value))
     }
 
 
@@ -172,45 +172,36 @@ class CustomizePromise<T> {
      * @returns A new CustomizePromise.
      */
     static all<T>(values: Iterable<T | PromiseLike<T>>): CustomizePromise<Awaited<T>[]>
-    static all(values: any[] | Iterable<any | PromiseLike<any>>): CustomizePromise<Awaited<any>[]> {
-        return new CustomizePromise<Awaited<any>[]>((resolve, reject) => {
+    static all(values: any[] | Iterable<any | PromiseLike<any>>): CustomizePromise<any[]> {
+        return new CustomizePromise<any[]>((resolve, reject) => {
+            const results: any[] = []
+            const resolveResults = () => resolve(results)
+
             let remaining = 0
-
-            const results: unknown[] = []
-
-            const setResult = (idx: number, value: unknown) => {
-                results[idx] = value
-            }
-
-            const resolveResults = () => {
-                resolve(results as Awaited<any>[])
-            }
-
-            const resolver = (idx: number) => {
+            const createResolve = (idx: number) => {
                 remaining++
 
-                return (value: unknown) => {
-                    setResult(idx, value)
+                return (value: any) => {
+                    results[idx] = value
 
                     if (--remaining === 0) resolveResults()
                 }
             }
 
             Array.from(values).forEach((value, idx) => {
-                if (!isPromiseLike((value))) {
-                    setResult(idx, value)
+                const _resolve = createResolve(idx)
 
+                if (!isPromiseLike((value))) {
+                    CustomizePromise.resolve(value).then(_resolve)
                     return
                 }
 
                 try {
-                    value.then(resolver(idx), reject)
+                    value.then(_resolve, reject)
                 } catch (error) {
                     reject(error)
                 }
             })
-
-            if (remaining === 0) resolveResults()
         })
     }
 
@@ -229,11 +220,9 @@ class CustomizePromise<T> {
      * @returns A new CustomizePromise.
      */
     static race<T>(values: Iterable<T | PromiseLike<T>>): CustomizePromise<Awaited<T>>
-    static race(values: any[] | Iterable<any | PromiseLike<any>>): CustomizePromise<Awaited<any>> {
-        return new CustomizePromise<Awaited<any>>((resolve, reject) => {
-            const resolveValue = (value: unknown) => {
-                resolve(value as Awaited<any>)
-            }
+    static race(values: any[] | Iterable<any | PromiseLike<any>>): CustomizePromise<any> {
+        return new CustomizePromise<any>((resolve, reject) => {
+            const resolveValue = (value: any) => resolve(value)
 
             Array.from(values).forEach(value => {
                 if (!isPromiseLike(value)) {
@@ -266,18 +255,18 @@ class CustomizePromise<T> {
      * @returns A new CustomizePromise.
      */
     static allSettled<T>(values: Iterable<T | PromiseLike<T>>): CustomizePromise<CustomizePromiseSettledResult<Awaited<T>>[]>
-    static allSettled(values: any[] | Iterable<any | PromiseLike<any>>): CustomizePromise<Awaited<CustomizePromiseSettledResult<any>[]>> {
-        return new CustomizePromise<Awaited<CustomizePromiseSettledResult<any>[]>>(resolve => {
-            const results: PromiseSettledResult<any>[] = []
+    static allSettled(values: any[] | Iterable<any | PromiseLike<any>>): CustomizePromise<CustomizePromiseSettledResult<any>[]> {
+        return new CustomizePromise<CustomizePromiseSettledResult<any>[]>(resolve => {
+            const results: CustomizePromiseSettledResult<any>[] = []
+            const resolveResults = () => resolve(results)
 
             const settleStrategy = {
-                [CustomizePromiseStatusEnum.FULFILLED]: (value: unknown, idx: number) => {
+                [CustomizePromiseStatusEnum.FULFILLED]: (value: any, idx: number) => {
                     results[idx] = {
                         status: CustomizePromiseStatusEnum.FULFILLED,
                         value
                     } as CustomizePromiseFulfilledResult<any>
                 },
-
                 [CustomizePromiseStatusEnum.REJECTED]: (reason: any, idx: number) => {
                     results[idx] = {
                         status: CustomizePromiseStatusEnum.REJECTED,
@@ -286,16 +275,12 @@ class CustomizePromise<T> {
                 }
             }
 
-            const resolveResults = () => {
-                resolve(results as Awaited<CustomizePromiseSettledResult<any>[]>)
-            }
-
             let remaining = 0
             const createSettleHanlder = (status: CustomizePromiseStatusEnum.FULFILLED | CustomizePromiseStatusEnum.REJECTED) => {
                 return (idx: number) => {
                     remaining++
 
-                    return (valueOrReason: unknown) => {
+                    return (valueOrReason: any) => {
                         settleStrategy[status](valueOrReason, idx)
 
                         if ((remaining -= 2) === 0) resolveResults()
@@ -303,25 +288,25 @@ class CustomizePromise<T> {
                 }
             }
 
-            const resolver = createSettleHanlder(CustomizePromiseStatusEnum.FULFILLED)
-            const rejecter = createSettleHanlder(CustomizePromiseStatusEnum.REJECTED)
+            const createResolve = createSettleHanlder(CustomizePromiseStatusEnum.FULFILLED)
+            const createReject = createSettleHanlder(CustomizePromiseStatusEnum.REJECTED)
 
             Array.from(values).forEach((value, idx) => {
+                const _resolve = createResolve(idx)
+                const _reject = createReject(idx)
+
                 if (!isPromiseLike(value)) {
-                    settleStrategy[CustomizePromiseStatusEnum.FULFILLED](value, idx)
+                    CustomizePromise.resolve(value).then(_resolve)
 
                     return
                 }
 
                 try {
-                    value.then(resolver(idx), rejecter(idx))
+                    value.then(_resolve, _reject)
                 } catch (error) {
-                    remaining -= 2
-                    settleStrategy[CustomizePromiseStatusEnum.REJECTED](error, idx)
+                    _reject(error)
                 }
             })
-
-            if (remaining === 0) resolveResults()
         })
     }
 
