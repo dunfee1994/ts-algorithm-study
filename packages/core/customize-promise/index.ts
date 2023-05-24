@@ -172,7 +172,7 @@ class CustomizePromise<T> {
      * @returns A new CustomizePromise.
      */
     static all<T>(values: Iterable<T | PromiseLike<T>>): CustomizePromise<Awaited<T>[]>
-    static all(values: any[] | Iterable<any | PromiseLike<any>>): CustomizePromise<any[]> {
+    static all(values: Iterable<any | PromiseLike<any>>): CustomizePromise<any[]> {
         return new CustomizePromise<any[]>((resolve, reject) => {
             const results: any[] = []
             const resolveResults = () => resolve(results)
@@ -220,7 +220,7 @@ class CustomizePromise<T> {
      * @returns A new CustomizePromise.
      */
     static race<T>(values: Iterable<T | PromiseLike<T>>): CustomizePromise<Awaited<T>>
-    static race(values: any[] | Iterable<any | PromiseLike<any>>): CustomizePromise<any> {
+    static race(values: Iterable<any | PromiseLike<any>>): CustomizePromise<any> {
         return new CustomizePromise<any>((resolve, reject) => {
             const resolveValue = (value: any) => resolve(value)
 
@@ -255,7 +255,7 @@ class CustomizePromise<T> {
      * @returns A new CustomizePromise.
      */
     static allSettled<T>(values: Iterable<T | PromiseLike<T>>): CustomizePromise<CustomizePromiseSettledResult<Awaited<T>>[]>
-    static allSettled(values: any[] | Iterable<any | PromiseLike<any>>): CustomizePromise<CustomizePromiseSettledResult<any>[]> {
+    static allSettled(values: Iterable<any | PromiseLike<any>>): CustomizePromise<CustomizePromiseSettledResult<any>[]> {
         return new CustomizePromise<CustomizePromiseSettledResult<any>[]>(resolve => {
             const results: CustomizePromiseSettledResult<any>[] = []
             const resolveResults = () => resolve(results)
