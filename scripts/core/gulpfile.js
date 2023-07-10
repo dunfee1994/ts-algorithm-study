@@ -11,7 +11,7 @@ gulp.task('git-push-to-gitee', cb => {
     const branch = argv['branch'] || 'master'
 
     console.log()
-    console.log('git push gitee' + branch)
+    console.log('git push gitee ' + branch)
     console.log()
 
     runCmd('git', ['push', 'gitee', branch], (code, result) => result ? cb(result) : cb())
@@ -21,7 +21,7 @@ gulp.task('git-push-to-github', cb => {
     const branch = argv['branch'] || 'master'
 
     console.log()
-    console.log('git push origin' + branch)
+    console.log('git push origin ' + branch)
     console.log()
 
     runCmd('git', ['push', 'origin', branch], (code, result) => result? cb(result) : cb())
