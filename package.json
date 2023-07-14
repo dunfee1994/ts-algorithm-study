@@ -5,6 +5,7 @@
     "main": "lib/index.js",
     "scripts": {
         "test": "jest packages/__tests__/*",
+        "check-ts": "node scripts/cli/run.js check-ts",
         "compile": "node scripts/cli/run.js compile",
         "git-push": "node scripts/cli/run.js git-push"
     },
@@ -23,6 +24,7 @@
         "gulp": "^4.0.2",
         "gulp-babel": "^8.0.0",
         "gulp-strip-code": "^0.1.4",
+        "gulp-typescript": "^6.0.0-alpha.1",
         "is-windows": "^1.0.2",
         "jest": "^28.1.0",
         "minimist": "^1.2.8",
