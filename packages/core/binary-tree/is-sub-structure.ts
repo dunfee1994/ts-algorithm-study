@@ -1,3 +1,5 @@
+import { TreeNode } from './interface'
+
 /**
  * 输入两棵二叉树 a 和 b，判断 b 是不是 a 的子结构
  *
