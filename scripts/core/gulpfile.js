@@ -1,6 +1,7 @@
 const gulp = require('gulp')
 const runCmd = require('./runCmd')
 const compile = require('./compile')
+const complieTs = require('./complieTs')
 const argv = require('minimist')(process.argv.slice(2))
 
 const { getConfig } = require('../utils/projectHelper')
@@ -33,6 +34,8 @@ gulp.task('git-push', gulp.series(
         'git-push-to-github'
     )
 ))
+
+gulp.task('check-ts', done => complieTs().on('finish', done))
 
 gulp.task('compile-with-es', done => {
     console.log('start compile at ', startTime)
