@@ -8,24 +8,42 @@ const { getConfig } = require('../utils/projectHelper')
 
 let startTime = new Date()
 
-gulp.task('git-push-to-gitee', cb => {
+gulp.task('git-push-to-gitee', done => {
     const branch = argv['branch'] || 'master'
 
     console.log()
     console.log('git push gitee ' + branch)
     console.log()
 
-    runCmd('git', ['push', 'gitee', branch], (code, result) => result ? cb(result) : cb())
+    runCmd('git', ['push', 'gitee', branch], {
+        onClose(code) {
+            if (code === 0) {
+                console.log()
+                console.log('git push gitee ' + branch + ' success!!!')
+                console.log()
+            }
+            done()
+        }
+    })
 })
 
-gulp.task('git-push-to-github', cb => {
+gulp.task('git-push-to-github', done => {
     const branch = argv['branch'] || 'master'
 
     console.log()
     console.log('git push origin ' + branch)
     console.log()
 
-    runCmd('git', ['push', 'origin', branch], (code, result) => result? cb(result) : cb())
+    runCmd('git', ['push', 'origin', branch], {
+        onClose(code) {
+            if (code === 0) {
+                console.log()
+                console.log('git push origin ' + branch + ' success!!!')
+                console.log()
+            }
+            done()
+        }
+    })
 })
 
 gulp.task('git-push', gulp.series(
