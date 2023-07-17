@@ -34,9 +34,10 @@ export function fourSum(nums: number[], target: number): NumericQuadrupleType[] 
 
         const startJ = i + 1
         const threeSumTarget = target - iNum
+        if (nums[startJ] + nums[startJ + 1] + nums[startJ + 2] < threeSumTarget) break
+
         const rightTwoSum = nums[right - 1] + nums[right]
         if (nums[right - 2] > threeSumTarget - rightTwoSum) continue
-        if (nums[startJ] + nums[startJ + 1] + nums[startJ + 2] < threeSumTarget) break
 
         for (let j = startJ, endJ = right - 2; j <= endJ; j++) {
             const jNum = nums[j]
@@ -44,19 +45,19 @@ export function fourSum(nums: number[], target: number): NumericQuadrupleType[] 
 
             const left = j + 1
             const twoSumTarget = threeSumTarget - jNum
-            if (rightTwoSum > twoSumTarget) continue
             if (nums[left] + nums[left + 1] < twoSumTarget) break
+            if (rightTwoSum > twoSumTarget) continue
 
             for (let l = left, r = right; l < r; l++) {
                 const lNum = nums[l]
                 if (l > left && lNum === nums[l - 1]) continue
 
-                while (r > l && nums[r] < twoSumTarget - lNum) r--
+                const rNumTarget = twoSumTarget - lNum
+                while (r > l && nums[r] < rNumTarget) r--
                 if (l === r) break
 
-                const rNum = nums[r]
-                if (lNum + rNum === twoSumTarget) {
-                    result.push([lNum, rNum, jNum, iNum])
+                if (nums[r] === rNumTarget) {
+                    result.push([lNum, rNumTarget, jNum, iNum])
                 }
             }
         }

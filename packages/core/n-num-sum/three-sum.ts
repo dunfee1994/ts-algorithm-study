@@ -31,12 +31,12 @@ export function threeSum(nums: number[]): [number, number, number][] {
             const lNum = nums[l]
             if (l > left && lNum === nums[l - 1]) continue
 
-            while (r > l && nums[r] + lNum < target) r--
-            if (l == r) break
+            const rNumTarget = target - lNum
+            while (r > l && nums[r] < rNumTarget) r--
+            if (l === r) break
 
-            const rNum = nums[r]
-            if (lNum + rNum === target) {
-                result.push([lNum, rNum, num])
+            if (nums[r] === rNumTarget) {
+                result.push([lNum, rNumTarget, num])
             }
         }
     }
