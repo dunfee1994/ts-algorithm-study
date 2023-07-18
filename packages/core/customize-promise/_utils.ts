@@ -17,44 +17,46 @@ export function isPromiseLike<T>(obj: any): obj is PromiseLike<T> {
  * Append a task to the microtask queue.
  * @param taskFn a task.
  */
-export function appendTaskIntoMicroTaskQueue(taskFn: () => void) {
+export const appendTaskIntoMicroTaskQueue = function () {
     if (isFunction(queueMicrotask)) {
-        queueMicrotask(taskFn)
-
-        return
+        return function (taskFn: () => void) {
+            queueMicrotask(taskFn)
+        }
     }
 
     if (!isNode && isDef(MutationObserver)) {
-        let divEl = document.createElement('div')
-        let ob = new MutationObserver(() => {
-            taskFn()
+        return function (taskFn: () => void) {
+            let divEl = document.createElement('div')
+            let ob = new MutationObserver(() => {
+                taskFn()
 
-            ob.disconnect()
-            ob = null
-            divEl = null
-        })
+                ob.disconnect()
+                ob = null
+                divEl = null
+            })
 
-        ob.observe(divEl, { attributes: true })
-        divEl.setAttribute('data-micro-task-attr', 'true')
-
-        return
+            ob.observe(divEl, { attributes: true })
+            divEl.setAttribute('data-micro-task-attr', 'true')
+        }
     }
 
     if (isFunction(setImmediate)) {
-        let timer = setImmediate(() => {
-            taskFn()
+        return function (taskFn: () => void) {
+            let timer = setImmediate(() => {
+                taskFn()
 
-            clearImmediate(timer)
-            timer = null
-        })
-
-        return
+                clearImmediate(timer)
+                timer = null
+            })
+        }
     }
 
-    let timer = setTimeout(() => {
-        taskFn()
+    return function (taskFn: () => void) {
+        let timer = setTimeout(() => {
+            taskFn()
 
-        clearTimeout(timer)
-        timer = null
-    }, 0)
-}
+            clearTimeout(timer)
+            timer = null
+        }, 0)
+    }
+}()
