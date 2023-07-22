@@ -22,11 +22,12 @@ type NumericQuadrupleType = [number, number, number, number]
  */
 export function fourSum(nums: number[], target: number): NumericQuadrupleType[] {
     const right = nums.length - 1
-
-    const result: NumericQuadrupleType[] = []
-    if (right < 3) return result
+    if (right < 3) return []
 
     nums.sort((a, b) => b - a)
+
+    const result: NumericQuadrupleType[] = []
+    const rightTwoSum = nums[right - 1] + nums[right]
 
     for (let i = 0, endI = right - 3; i <= endI; i++) {
         const iNum = nums[i]
@@ -35,8 +36,6 @@ export function fourSum(nums: number[], target: number): NumericQuadrupleType[] 
         const startJ = i + 1
         const threeSumTarget = target - iNum
         if (nums[startJ] + nums[startJ + 1] + nums[startJ + 2] < threeSumTarget) break
-
-        const rightTwoSum = nums[right - 1] + nums[right]
         if (nums[right - 2] > threeSumTarget - rightTwoSum) continue
 
         for (let j = startJ, endJ = right - 2; j <= endJ; j++) {

@@ -12,11 +12,12 @@
  */
 export function threeSum(nums: number[]): [number, number, number][] {
     const right = nums.length - 1
-
-    const result: [number, number, number][] = []
-    if (right < 2) return result
+    if (right < 2) return []
 
     nums.sort((a, b) => b - a)
+
+    const result: [number, number, number][] = []
+    const rightTwoSum = nums[right - 1] + nums[right]
 
     for (let i = 0, endI = right - 2; i <= endI; i++) {
         const num = nums[i]
@@ -25,7 +26,7 @@ export function threeSum(nums: number[]): [number, number, number][] {
         const left = i + 1
         const target = -num
         if (nums[left] + nums[left + 1] < target) break
-        if (nums[right - 1] + nums[right] > target) continue
+        if (rightTwoSum > target) continue
 
         for (let l = left, r = right; l < r; l++) {
             const lNum = nums[l]
