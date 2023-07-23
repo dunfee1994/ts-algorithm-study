@@ -193,6 +193,7 @@ class CustomizePromise<T> {
 
                 if (!isPromiseLike((value))) {
                     CustomizePromise.resolve(value).then(_resolve)
+
                     return
                 }
 
