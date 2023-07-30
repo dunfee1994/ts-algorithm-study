@@ -1,7 +1,4 @@
-export interface LinkedListNode {
-    value: number
-    next: LinkedListNode | null
-}
+import { LinkedListNode } from './interface'
 
 // 创建链表
 export default function createLinkedList(nums: number[] = []): LinkedListNode | null {

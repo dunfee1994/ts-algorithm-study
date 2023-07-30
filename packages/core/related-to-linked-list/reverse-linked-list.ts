@@ -1,11 +1,7 @@
-import { LinkedListNode } from './create-linked-list'
-
-interface ReverseLinkedListFn {
-    (head: LinkedListNode | null): LinkedListNode | null
-}
+import { LinkedListNode } from './interface'
 
 // 反转链表
-const reverseLinkedList: ReverseLinkedListFn = function(head) {
+export default function reverseLinkedList(head: LinkedListNode | null): LinkedListNode | null {
     if (head === null) return null
 
     let pre = null
@@ -25,5 +21,3 @@ const reverseLinkedList: ReverseLinkedListFn = function(head) {
 
     return pre
 }
-
-export default reverseLinkedList

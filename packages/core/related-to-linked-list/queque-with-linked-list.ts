@@ -1,7 +1,4 @@
-interface LinkedListNode {
-    value: number
-    next: LinkedListNode | null
-}
+import { LinkedListNode } from './interface'
 
 export default class Queue {
     private _len: number = 0
