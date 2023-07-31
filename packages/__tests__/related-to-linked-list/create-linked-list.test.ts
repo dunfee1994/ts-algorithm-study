@@ -1,4 +1,6 @@
-import createLinkedList, { LinkedListNode } from '../../core/related-to-linked-list/create-linked-list'
+import createLinkedList from '../../core/related-to-linked-list/create-linked-list'
+
+import { LinkedListNode } from '../../core/related-to-linked-list/interface'
 
 describe('创建链表', () => {
     it('非空数组', () => {
