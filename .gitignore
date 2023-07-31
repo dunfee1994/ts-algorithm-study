@@ -1,9 +1,9 @@
 .DS_Store
 node_modules
 
-es
-lib
-dist
+/es
+/lib
+/dist
 
 # lock files
 package-lock.json
